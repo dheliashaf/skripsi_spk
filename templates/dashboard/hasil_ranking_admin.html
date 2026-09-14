@@ -1,0 +1,111 @@
+{% extends 'base_admin.html' %}
+{% block title %}Hasil Ranking (Admin){% endblock %}
+{% block page_title %}Hasil Ranking (Admin){% endblock %}
+{% block content %}
+
+<div class="card card-shadow">
+    <div class="card-body">
+
+        <!-- Filter -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+            <div>
+                <form method="get" class="d-flex gap-2">
+                    <select name="sektor" class="form-select" style="width:180px;">
+                        <option value="">Semua Sektor</option>
+                        {% for sektor in sektor_list %}
+                        <option value="{{ sektor.id }}" {% if request.GET.sektor == sektor.id|stringformat:"s" %}selected{% endif %}>
+                            {{ sektor.nama }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <select name="periode" class="form-select" style="width:150px;">
+                        <option value="Q4-2025" {% if request.GET.periode == 'Q4-2025' %}selected{% endif %}>Q4-2025</option>
+                        <option value="Q3-2025" {% if request.GET.periode == 'Q3-2025' %}selected{% endif %}>Q3-2025</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter me-1"></i> Filter
+                    </button>
+                </form>
+            </div>
+            <div>
+                <a href="{% url 'dashboard:generate_pdf' %}" class="btn btn-danger">
+                    <i class="fas fa-file-pdf me-1"></i> Generate PDF
+                </a>
+                <a href="{% url 'dashboard:download_csv' %}" class="btn btn-success">
+                    <i class="fas fa-download me-1"></i> Download CSV
+                </a>
+            </div>
+        </div>
+
+        <!-- Cek apakah ada data ranking -->
+        {% if hasil_ranking %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Sektor</th>  <!-- TAMBAHKAN -->
+                        <th>Skor</th>
+                        <th>Rekomendasi</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in hasil_ranking %}
+                    <tr>
+                        <td>
+                            <span class="badge bg-{{ item.rank_color|default:'secondary' }}">
+                                {{ item.rank }}
+                            </span>
+                        </td>
+                        <td><strong>{{ item.kode }}</strong></td>
+                        <td>{{ item.nama }}</td>
+                        <td>{{ item.sektor|default:"-" }}</td>  <!-- TAMBAHKAN -->
+                        <td>
+                            {{ item.skor|floatformat:3 }}
+                            {% if item.bi_rate is not None %}
+                            <br>
+                            <small class="text-muted">BI Rate: {{ item.bi_rate|floatformat:2 }}%</small>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge bg-{{ item.rekom_color|default:'secondary' }}">
+                                {{ item.rekom }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-sm btn-primary">Detail</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Grafik Skor -->
+        <div class="mt-4">
+            <h6>📊 Grafik Skor</h6>
+            {% for item in hasil_ranking %}
+            <div class="progress mb-2" style="height:30px;">
+                <div class="progress-bar bg-{{ item.warna|default:'primary' }}"
+                     style="width: {{ item.persen|default:0 }}%;">
+                    {{ item.kode }} {{ item.skor|floatformat:3 }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% else %}
+        <!-- Jika tidak ada data -->
+        <div class="alert alert-warning text-center">
+            <i class="fas fa-info-circle me-2"></i>
+            Belum ada data ranking. Silakan jalankan proses analisis terlebih dahulu di menu Proses Analisis.
+        </div>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock %}

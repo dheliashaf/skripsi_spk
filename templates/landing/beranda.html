@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Beranda{% endblock %}
+{% block content %}
+
+<!-- HERO SECTION (OPSI 1) -->
+<div class="hero-section" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); color: white; padding: 80px 0;">
+    <div class="container">
+        <h1 class="display-3 fw-bold mb-3">
+            Temukan Saham Terbaik di Setiap Sektor
+        </h1>
+        <p class="lead mb-4" style="max-width: 700px;">
+            Bandingkan emiten dalam industri yang sama (<strong>apple-to-apple</strong>) 
+            secara objektif. Sistem ini membantu investor pemula memilih saham 
+            terbaik berbasis 4 rasio fundamental dengan metode <strong>Fuzzy AHP</strong>.
+        </p>
+        <a href="{% url 'proses_analisis' %}" class="btn btn-light btn-lg px-5 py-3 rounded-pill shadow-sm">
+            Mulai Analisis Sekarang <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
+
+<!-- 3 FITUR UTAMA -->
+<div class="container py-5">
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3">
+                <div class="card-body">
+                    <div class="display-1 text-primary"><i class="fas fa-building"></i></div>
+                    <h5 class="card-title fw-bold mt-3">Perbandingan Sektoral</h5>
+                    <p class="card-text">Evaluasi adil dengan membandingkan saham dalam kelompok industri yang sama (Perbankan, Energi, dll).</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3">
+                <div class="card-body">
+                    <div class="display-1 text-primary"><i class="fas fa-brain"></i></div>
+                    <h5 class="card-title fw-bold mt-3">Fuzzy Logic</h5>
+                    <p class="card-text">Mengatasi ketidakpastian penilaian manusia menggunakan rentang bilangan Fuzzy TFN.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 text-center p-3">
+                <div class="card-body">
+                    <div class="display-1 text-primary"><i class="fas fa-check-circle"></i></div>
+                    <h5 class="card-title fw-bold mt-3">Rekomendasi Akurat</h5>
+                    <p class="card-text">Menghasilkan skor preferensi akhir (Sj) berdasarkan 4 rasio fundamental (ROE, DER, PER, EPS).</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

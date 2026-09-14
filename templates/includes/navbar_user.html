@@ -1,0 +1,18 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'beranda' %}"><i class="fas fa-chart-line text-primary"></i> SPK Saham</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link {% if active == 'beranda' %}active{% endif %}" href="{% url 'beranda' %}">Beranda</a></li>
+                <li class="nav-item"><a class="nav-link {% if active == 'data_saham' %}active{% endif %}" href="{% url 'data_saham' %}">Data Saham & Glosarium</a></li>
+                <li class="nav-item"><a class="nav-link {% if active == 'proses' %}active{% endif %}" href="{% url 'proses_analisis' %}">Proses Analisis</a></li>
+                <li class="nav-item"><a class="nav-link {% if active == 'hasil' %}active{% endif %}" href="{% url 'hasil_rekomendasi' %}">Hasil Rekomendasi</a></li>
+                <li class="nav-item"><a class="nav-link {% if active == 'tentang' %}active{% endif %}" href="{% url 'tentang_metode' %}">Tentang Metode</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:login' %}"><i class="fas fa-user-lock"></i></a></li>
+            </ul>
+        </div>
+    </div>
+</nav>

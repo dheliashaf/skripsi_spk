@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block title %}Data Saham{% endblock %}
+{% block content %}
+
+<div class="container py-4">
+    <h2 class="mb-4">Data Emiten & Edukasi</h2>
+
+    <!-- GLOSARIUM -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light fw-bold">📖 Kamus Pintar Kriteria Saham</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- ROE -->
+                    <div class="mb-3 p-2 border rounded bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>ROE (Return on Equity)</strong>
+                            <span class="badge bg-success">BENEFIT</span>
+                        </div>
+                        <p class="text-muted small mb-1">
+                            <strong>Artinya:</strong> Efisiensi perusahaan dalam menghasilkan laba dari modal pemegang saham.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>📌 Makin tinggi → makin baik.</strong>
+                            Menunjukkan perusahaan mampu mengelola modalnya dengan baik.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>💡 Contoh:</strong> ROE 20% berarti setiap Rp100 modal pemegang saham menghasilkan laba Rp20.
+                        </p>
+                    </div>
+
+                    <!-- DER -->
+                    <div class="mb-3 p-2 border rounded bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>DER (Debt to Equity Ratio)</strong>
+                            <span class="badge bg-danger">COST</span>
+                        </div>
+                        <p class="text-muted small mb-1">
+                            <strong>Artinya:</strong> Perbandingan utang perusahaan dengan modalnya sendiri.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>📌 Makin rendah → makin aman.</strong>
+                            Perusahaan dengan DER rendah lebih sehat finansial.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>💡 Contoh:</strong> DER 1,5 berarti utang perusahaan 1,5 kali lebih besar dari modalnya.
+                        </p>
+                    </div>
+
+                    <!-- BI Rate -->
+                    <div class="mb-3 p-2 border rounded bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>BI Rate (Suku Bunga Bank Indonesia)</strong>
+                            <span class="badge bg-danger">COST</span>
+                        </div>
+                        <p class="text-muted small mb-1">
+                            <strong>Artinya:</strong> Suku bunga acuan yang ditetapkan Bank Indonesia.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>📌 Makin rendah → makin baik untuk investasi.</strong>
+                            Suku bunga rendah membuat biaya pinjaman murah dan mendorong pertumbuhan ekonomi.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>💡 Saat ini:</strong> BI Rate = <strong>4,75%</strong> (relatif rendah → mendukung investasi saham).
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <!-- PER -->
+                    <div class="mb-3 p-2 border rounded bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>PER (Price to Earnings Ratio)</strong>
+                            <span class="badge bg-danger">COST</span>
+                        </div>
+                        <p class="text-muted small mb-1">
+                            <strong>Artinya:</strong> Perbandingan harga saham dengan laba per saham.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>📌 Makin rendah → makin murah (undervalued).</strong>
+                            PER rendah berarti saham relatif murah dibandingkan labanya.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>💡 Contoh:</strong> PER 10 berarti harga saham 10 kali laba per tahun.
+                        </p>
+                    </div>
+
+                    <!-- EPS -->
+                    <div class="mb-3 p-2 border rounded bg-light">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>EPS (Earnings Per Share)</strong>
+                            <span class="badge bg-success">BENEFIT</span>
+                        </div>
+                        <p class="text-muted small mb-1">
+                            <strong>Artinya:</strong> Laba bersih yang diperoleh per lembar saham.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>📌 Makin besar → makin menguntungkan.</strong>
+                            EPS tinggi menunjukkan perusahaan menghasilkan banyak laba untuk pemegang saham.
+                        </p>
+                        <p class="text-muted small mb-0">
+                            <strong>💡 Contoh:</strong> EPS 500 berarti setiap lembar saham mendapat jatah laba Rp500.
+                        </p>
+                    </div>
+
+                    <!-- Tips Tambahan -->
+                    <div class="mt-3 p-3 border rounded bg-info bg-opacity-10">
+                        <h6 class="fw-bold text-info">💡 Tips untuk Investor Pemula</h6>
+                        <ul class="text-muted small mb-0">
+                            <li><strong>BENEFIT</strong> (ROE, EPS) → <span class="text-success">semakin tinggi, semakin baik</span> ✅</li>
+                            <li><strong>COST</strong> (PER, DER, BI Rate) → <span class="text-danger">semakin rendah, semakin baik</span> ✅</li>
+                            <li>Perhatikan <strong>BI Rate</strong> untuk mengetahui kondisi ekonomi saat ini.</li>
+                            <li>Jangan hanya melihat satu kriteria, gunakan <strong>kombinasi</strong> untuk menilai saham.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABEL DATA -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">Dataset Emiten LQ45 per Sektor</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover table-striped">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>KODE</th>
+                            <th>NAMA PERUSAHAAN</th>
+                            <th>SEKTOR</th>
+                            <th>ROE (%)</th>
+                            <th>DER (X)</th>
+                            <th>PER (X)</th>
+                            <th>EPS (Rp)</th>
+                            <th>BI Rate (%)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for saham in saham_list %}
+                        <tr>
+                            <td><strong>{{ saham.kode_saham }}</strong></td>
+                            <td>{{ saham.nama_perusahaan }}</td>
+                            <td><span class="badge bg-primary">{{ saham.sektor.nama|upper }}</span></td>
+                            <td>{{ saham.roe }}</td>
+                            <td>{{ saham.der }}</td>
+                            <td>{{ saham.per }}</td>
+                            <td>{{ saham.eps }}</td>
+                            <td>{{ saham.bi_rate|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="8" class="text-center py-3 text-muted">
+                                <i class="fas fa-info-circle me-2"></i> Belum ada data saham. Silakan upload CSV terlebih dahulu.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUMBER DATA -->
+            <div class="mt-3 p-3 bg-light rounded small text-muted">
+                <i class="fas fa-database me-2 text-primary"></i>
+                <strong>Sumber Data:</strong>
+                Data rasio keuangan diperoleh dari aplikasi
+                <strong>IDX Mobile</strong>,
+                yang merupakan aplikasi resmi
+                <strong>Bursa Efek Indonesia (BEI)</strong>.
+                <span class="d-block mt-1">
+                    <i class="fas fa-calendar-alt me-1 text-primary"></i>
+                    Periode: <strong>Q4-2025</strong>
+                </span>
+                <span class="d-block mt-1">
+                    <i class="fas fa-chart-line me-1 text-primary"></i>
+                    BI Rate: <strong>4,75%</strong> (sumber: Bank Indonesia)
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

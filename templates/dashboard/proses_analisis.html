@@ -1,0 +1,99 @@
+{% extends 'base_admin.html' %}
+{% block title %}Proses Analisis{% endblock %}
+{% block page_title %}Proses Analisis{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-shadow">
+            <div class="card-body">
+                <h5><i class="fas fa-cogs text-primary me-2"></i>Konfigurasi Analisis</h5>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Pilih Sektor</label>
+                        <select class="form-select" name="sektor">
+                            <option value="">Semua Sektor</option>
+                            {% for sektor in sektor_list %}
+                            <option value="{{ sektor.id }}">{{ sektor.nama }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Pilih Periode</label>
+                        <select class="form-select" name="periode">
+                            <option value="Q4-2025">Q4-2025</option>
+                            <option value="Q3-2025">Q3-2025</option>
+                            <option value="2025">2025</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Tampilkan Top</label>
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="top" id="top5_admin" value="5" checked>
+                            <label class="btn btn-outline-primary" for="top5_admin">Top 5</label>
+                            <input type="radio" class="btn-check" name="top" id="top10_admin" value="10">
+                            <label class="btn btn-outline-primary" for="top10_admin">Top 10</label>
+                            <input type="radio" class="btn-check" name="top" id="all_admin" value="all">
+                            <label class="btn btn-outline-primary" for="all_admin">Semua</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" name="jalankan_analisis" value="1" class="btn btn-primary btn-lg">
+    <i class="fas fa-play me-1"></i> Jalankan Analisis
+</button>
+                </form>
+
+                <hr>
+
+                <!-- LOG PROSES (dinamis) -->
+                <h6><i class="fas fa-list me-2"></i>Log Proses</h6>
+                <div class="bg-light p-3 rounded" style="font-family:monospace; font-size:13px;">
+                    {% if log_proses %}
+                        {% for log in log_proses %}
+                        <div class="text-{{ log.warna }}"><i class="fas fa-{{ log.icon }} me-2"></i> {{ log.pesan }}</div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-muted"><i class="fas fa-info-circle me-2"></i> Belum ada proses analisis.</div>
+                    {% endif %}
+                </div>
+
+                {% if hasil_ranking %}
+                <a href="{% url 'dashboard:hasil_ranking' %}" class="btn btn-info text-white mt-3">
+                    <i class="fas fa-list me-1"></i> Lihat Hasil Ranking →
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-shadow">
+            <div class="card-body">
+                <h6><i class="fas fa-info-circle me-2"></i>Informasi</h6>
+                <hr>
+                <p><strong>Total Saham:</strong> {{ total_saham|default:0 }}</p>
+                <p><strong>Sektor Aktif:</strong> {{ total_sektor|default:0 }}</p>
+                <p><strong>Bobot Tersedia:</strong>
+                    {% if bobot_tersedia %}
+                    <span class="badge bg-success">✓</span>
+                    {% else %}
+                    <span class="badge bg-danger">✗</span>
+                    {% endif %}
+                </p>
+                <p><strong>Status:</strong>
+                    {% if bobot_tersedia and total_saham > 0 %}
+                    <span class="badge bg-success">Siap Analisis</span>
+                    {% else %}
+                    <span class="badge bg-warning">Belum Siap</span>
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

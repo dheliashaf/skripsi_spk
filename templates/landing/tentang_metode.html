@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block title %}Tentang Metode{% endblock %}
+{% block content %}
+
+<div class="container py-4">
+    <h2 class="mb-4 text-center">Penjelasan Metodologi</h2>
+
+    <div class="row">
+        <!-- KOLOM KIRI: Penjelasan Utama -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <h4 class="mb-3">Apa itu Fuzzy AHP?</h4>
+                    <p>
+                        <strong>Fuzzy Analytical Hierarchy Process (F-AHP)</strong> adalah metode pengambilan keputusan 
+                        yang dikembangkan dari AHP biasa. AHP biasa memaksa pakar memberi angka pasti 
+                        (misal: <em>"ROE 3 kali lebih penting dari EPS"</em>). Padahal, dalam kenyataannya, 
+                        penilaian manusia seringkali <strong>tidak pasti</strong>.
+                    </p>
+                    <p>
+                        Oleh karena itu, F-AHP menggunakan <strong>angka segitiga (Triangular Fuzzy Number)</strong> 
+                        yang terdiri dari 3 nilai:
+                    </p>
+
+                    <div class="row text-center mb-3">
+                        <div class="col-4">
+                            <span class="badge bg-danger fs-6 px-3 py-2">l</span>
+                            <p class="small text-muted mt-1">Nilai bawah<br><em>(pesimis)</em></p>
+                        </div>
+                        <div class="col-4">
+                            <span class="badge bg-warning fs-6 px-3 py-2">m</span>
+                            <p class="small text-muted mt-1">Nilai tengah<br><em>(paling mungkin)</em></p>
+                        </div>
+                        <div class="col-4">
+                            <span class="badge bg-success fs-6 px-3 py-2">u</span>
+                            <p class="small text-muted mt-1">Nilai atas<br><em>(optimis)</em></p>
+                        </div>
+                    </div>
+
+                    <p>
+                        Dengan pendekatan ini, penilaian menjadi lebih <strong>fleksibel dan realistis</strong>, 
+                        tidak kaku seperti angka tunggal.
+                    </p>
+
+                    <hr>
+
+                    <h5 class="mt-4">Bagaimana Sistem Ini Bekerja?</h5>
+                    <ol>
+                        <li>
+                            <strong>Bobot kriteria</strong> (ROE, EPS, PER, DER) diperoleh dari 
+                            <strong>kuisioner 7 praktisi pasar modal</strong> PT Phintraco Sekuritas.
+                        </li>
+                        <li>
+                            Sistem mengelompokkan saham <strong>per sektor</strong> agar perbandingan adil 
+                            (<em>apple-to-apple</em>).
+                        </li>
+                        <li>
+                            Data fundamental saham dikalikan dengan bobot kriteria menggunakan metode 
+                            <strong>SAW (Simple Additive Weighting)</strong>.
+                        </li>
+                        <li>
+                            Hasilnya adalah <strong>skor preferensi akhir (Sj)</strong> yang menentukan 
+                            peringkat saham.
+                        </li>
+                    </ol>
+
+                    <div class="alert alert-info mt-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <strong>Semakin tinggi skor (Sj), semakin baik rekomendasi saham tersebut!</strong>
+                    </div>
+
+                    <hr>
+
+                    <h5 class="mt-4">📊 Kriteria yang Digunakan</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Kriteria</th>
+                                    <th>Sifat</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>ROE</strong></td>
+                                    <td><span class="badge bg-success">Benefit</span></td>
+                                    <td>Semakin tinggi semakin baik</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>EPS</strong></td>
+                                    <td><span class="badge bg-success">Benefit</span></td>
+                                    <td>Semakin tinggi semakin baik</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>PER</strong></td>
+                                    <td><span class="badge bg-danger">Cost</span></td>
+                                    <td>Semakin rendah semakin baik</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>DER</strong></td>
+                                    <td><span class="badge bg-danger">Cost</span></td>
+                                    <td>Semakin rendah semakin baik</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KOLOM KANAN: Ringkasan / Sidebar -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <i class="fas fa-calculator display-1 text-primary"></i>
+                    <h5 class="mt-3">Fuzzy AHP</h5>
+                    <p class="text-muted small">
+                        Menangani ketidakpastian dalam penilaian investor pemula
+                    </p>
+                    <hr>
+                    <div>
+                        <span class="badge bg-primary me-1">ROE</span>
+                        <span class="badge bg-success me-1">EPS</span>
+                        <span class="badge bg-warning me-1">PER</span>
+                        <span class="badge bg-danger">DER</span>
+                    </div>
+                    <hr>
+                    <p class="small text-muted mb-0">
+                        <i class="fas fa-check-circle text-success"></i> 
+                        Bobot dihitung dari kuisioner ahli
+                    </p>
+                    <p class="small text-muted">
+                        <i class="fas fa-check-circle text-success"></i> 
+                        Perangkingan per sektor (apple-to-apple)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Card Tambahan: Sumber Data -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h6 class="fw-bold">📂 Sumber Data</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            <strong>IDX Mobile</strong> (aplikasi resmi BEI)
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            <strong>Laporan Keuangan</strong> (IDX)
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check-circle text-success me-1"></i>
+                            <strong>Kuisioner Ahli</strong> (7 praktisi PT Phintraco)
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Card Informasi -->
+<div class="card shadow-sm mt-3">
+    <div class="card-body">
+        <h6 class="fw-bold">ℹ️ Informasi</h6>
+        <ul class="small text-muted mb-0 ps-3">
+            <li><strong>16 saham</strong> dari <strong>5 sektor</strong> sebagai sampel penelitian</li>
+            <li>Data dapat ditambah sesuai kebutuhan pengguna</li>
+            <li>Sistem ini adalah <strong>prototype</strong> untuk keperluan skripsi</li>
+        </ul>
+    </div>
+</div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

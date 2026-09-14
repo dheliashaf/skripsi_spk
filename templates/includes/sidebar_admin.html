@@ -1,0 +1,48 @@
+<div class="sidebar">
+    <div class="brand">
+        <i class="fas fa-chart-line me-2"></i>SPK Admin
+    </div>
+
+    <a href="{% url 'dashboard:dashboard' %}" class="{% if active == 'dashboard' %}active{% endif %}">
+        <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+    </a>
+
+    <a href="{% url 'dashboard:upload_csv' %}" class="{% if active == 'upload' %}active{% endif %}">
+        <i class="fas fa-file-csv me-2"></i> Upload CSV
+    </a>
+
+    <a href="{% url 'dashboard:kelola_saham' %}" class="{% if active == 'saham' %}active{% endif %}">
+        <i class="fas fa-database me-2"></i> Kelola Saham
+    </a>
+
+    <a href="{% url 'dashboard:kelola_sektor' %}" class="{% if active == 'sektor' %}active{% endif %}">
+        <i class="fas fa-tags me-2"></i> Kelola Sektor
+    </a>
+
+    <a href="{% url 'dashboard:kriteria_pairwise' %}" class="{% if active == 'kriteria' %}active{% endif %}">
+        <i class="fas fa-sliders-h me-2"></i> Kriteria & Pairwise
+    </a>
+
+    <a href="{% url 'dashboard:proses_analisis' %}" class="{% if active == 'analisis' %}active{% endif %}">
+        <i class="fas fa-cogs me-2"></i> Proses Analisis
+    </a>
+
+    <a href="{% url 'dashboard:hasil_ranking' %}" class="{% if active == 'hasil' %}active{% endif %}">
+        <i class="fas fa-list me-2"></i> Hasil Ranking
+    </a>
+
+    <a href="{% url 'dashboard:riwayat' %}" class="{% if active == 'riwayat' %}active{% endif %}">
+        <i class="fas fa-history me-2"></i> Riwayat
+    </a>
+
+    <!-- ===== INI YANG HARUS ADA ===== -->
+    <a href="{% url 'dashboard:api_info' %}" class="{% if active == 'api' %}active{% endif %}">
+        <i class="fas fa-plug me-2"></i> Integrasi API
+    </a>
+
+    <div class="logout">
+        <a href="{% url 'dashboard:logout' %}" class="text-danger">
+            <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </a>
+    </div>
+</div>

@@ -1,0 +1,82 @@
+{% extends 'base_admin.html' %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_saham|default:0 }}</div>
+            <div class="stat-label">Total Saham</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_sektor|default:0 }}</div>
+            <div class="stat-label">Sektor Aktif</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_riwayat|default:0 }}</div>
+            <div class="stat-label">Analisis Terakhir</div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <div class="stat-number">{{ ranking_terbaru|length|default:0 }}</div>
+            <div class="stat-label">Ranking Tersimpan</div>
+        </div>
+    </div>
+</div>
+
+<!-- Ranking Terbaru -->
+<div class="card card-shadow">
+    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+        <h5 class="mb-0"><i class="fas fa-trophy text-warning me-2"></i>Ranking Terbaru</h5>
+        <span class="badge bg-secondary">Q4-2025</span>
+    </div>
+    <div class="card-body">
+        {% if ranking_terbaru %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Kode</th>
+                        <th>Nama</th>
+                        <th>Skor</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in ranking_terbaru %}
+                    <tr>
+                        <td><span class="badge bg-{{ item.rank_color|default:'secondary' }}">{{ item.rank }}</span></td>
+                        <td><strong>{{ item.kode }}</strong></td>
+                        <td>{{ item.nama }}</td>
+                        <td>{{ item.skor }}</td>
+                        <td>
+                            <a href="{% url 'dashboard:hasil_ranking' %}" class="btn btn-sm btn-primary">
+                                Detail
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="mt-2">
+            <a href="{% url 'dashboard:hasil_ranking' %}" class="btn btn-success btn-sm">
+                <i class="fas fa-list me-1"></i> Lihat Semua Ranking
+            </a>
+        </div>
+        {% else %}
+        <div class="alert alert-info text-center mb-0">
+            <i class="fas fa-info-circle me-2"></i>
+            Belum ada hasil ranking. Silakan jalankan proses analisis terlebih dahulu.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

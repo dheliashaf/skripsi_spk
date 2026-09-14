@@ -1,0 +1,85 @@
+{% extends 'base_admin.html' %}
+{% block title %}Upload CSV{% endblock %}
+{% block page_title %}Upload CSV{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card card-shadow">
+            <div class="card-body">
+                <h5><i class="fas fa-file-csv text-primary me-2"></i>Upload File CSV</h5>
+                <p class="text-muted">Unggah file CSV berisi data saham untuk diimpor ke sistem.</p>
+
+                <!-- NOTIFIKASI -->
+                {% if success %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i> {{ success }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Pilih File CSV</label>
+                        <input type="file" name="csv_file" class="form-control" accept=".csv" required id="fileInput">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-upload me-1"></i> Upload
+                    </button>
+                    <!-- TOMBOL RESET DENGAN JAVASCRIPT -->
+                    <button type="reset" class="btn btn-secondary" onclick="document.getElementById('fileInput').value = '';">
+                        <i class="fas fa-undo me-1"></i> Reset
+                    </button>
+                </form>
+
+                <hr>
+                <h6 class="fw-bold">📋 Format CSV yang Diharapkan</h6>
+                <div class="bg-light p-2 rounded">
+                    <code>
+                        kode_saham,nama_perusahaan,sektor,periode,roe,eps,per,der,bi_rate<br>
+                        BBCA,Bank Central Asia Tbk,Perbankan,Q4-2025,20.43,466.74,12.43,4.60,4.75
+                    </code>
+                </div>
+                <p class="text-muted small mt-2">
+                    <i class="fas fa-info-circle"></i> Pastikan file CSV memiliki kolom <strong>bi_rate</strong> (BI Rate) dengan nilai numerik.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card card-shadow">
+            <div class="card-body">
+                <h6><i class="fas fa-info-circle me-2"></i>Informasi</h6>
+                <hr>
+                <p class="small text-muted mb-2">
+                    <i class="fas fa-database text-primary me-1"></i>
+                    <strong>Total Saham:</strong> {{ total_saham|default:0 }}
+                </p>
+                <p class="small text-muted mb-2">
+                    <i class="fas fa-tags text-primary me-1"></i>
+                    <strong>Sektor Aktif:</strong> {{ total_sektor|default:0 }}
+                </p>
+                <p class="small text-muted mb-0">
+                    <i class="fas fa-file-csv text-success me-1"></i>
+                    Upload file CSV untuk menambah atau memperbarui data saham.
+                </p>
+                <hr>
+                <p class="small text-muted mb-0">
+                    <i class="fas fa-lightbulb text-warning me-1"></i>
+                    Pastikan file CSV memiliki format yang sesuai dengan contoh di samping.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

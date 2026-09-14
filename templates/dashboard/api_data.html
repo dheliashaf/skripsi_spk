@@ -1,0 +1,83 @@
+{% extends 'base_admin.html' %}
+{% block title %}Integrasi API{% endblock %}
+{% block page_title %}Integrasi API Data Saham{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-shadow mb-4">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-plug me-2"></i>Status Koneksi API</h5>
+                <span class="badge bg-warning">Simulasi</span>
+            </div>
+            <div class="card-body">
+                <p><strong>Status:</strong> <span class="badge bg-secondary">Belum Terhubung ke API Nyata</span></p>
+                <p><strong>Keterangan:</strong> Halaman ini adalah simulasi untuk menggambarkan bagaimana sistem akan bekerja jika terintegrasi dengan API data saham (misal: iTick, Yahoo Finance, atau IDX).</p>
+                <p><strong>Data yang ditampilkan:</strong> Data saham dari database (sebagai simulasi). Pada implementasi nyata, data akan diambil langsung dari API.</p>
+                <button class="btn btn-primary" onclick="alert('Simulasi: Data akan diambil dari API (belum terhubung)')">
+                    <i class="fas fa-sync me-1"></i> Ambil Data dari API (Simulasi)
+                </button>
+                <button class="btn btn-secondary" onclick="alert('Simulasi: Data disimpan ke database')">
+                    <i class="fas fa-save me-1"></i> Simpan Data ke Database (Simulasi)
+                </button>
+            </div>
+        </div>
+
+        <div class="card card-shadow">
+            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-database me-2"></i>Data Saham dari API (Simulasi)</h5>
+                <span class="badge bg-info">16 Saham</span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Kode</th>
+                                <th>Nama</th>
+                                <th>Sektor</th>
+                                <th>ROE</th>
+                                <th>EPS</th>
+                                <th>PER</th>
+                                <th>DER</th>
+                                <th>Sumber</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for saham in saham_list %}
+                            <tr>
+                                <td><strong>{{ saham.kode_saham }}</strong></td>
+                                <td>{{ saham.nama_perusahaan }}</td>
+                                <td><span class="badge bg-primary">{{ saham.sektor.nama }}</span></td>
+                                <td>{{ saham.roe }}</td>
+                                <td>{{ saham.eps }}</td>
+                                <td>{{ saham.per }}</td>
+                                <td>{{ saham.der }}</td>
+                                <td><span class="badge bg-secondary">Database (Simulasi)</span></td>
+                            </tr>
+                            {% empty %}
+                            <tr><td colspan="8" class="text-center">Belum ada data.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="card card-shadow mt-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Informasi Pengembangan</h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li><i class="fas fa-check-circle text-success me-2"></i> <strong>API Target:</strong> iTick / Yahoo Finance / Apify IDX Stock Screener</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Keuntungan:</strong> Data real-time, otomatis, tidak perlu upload CSV</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Tantangan:</strong> API berbayar, memerlukan koneksi internet, rate limit</li>
+                    <li><i class="fas fa-check-circle text-success me-2"></i> <strong>Rencana:</strong> Integrasi API sebagai fitur pengembangan selanjutnya</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

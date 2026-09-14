@@ -1,0 +1,193 @@
+{% extends 'base_admin.html' %}
+{% block title %}Kriteria & Pairwise{% endblock %}
+{% block page_title %}Kriteria & Pairwise{% endblock %}
+{% block content %}
+
+<div class="row">
+    <!-- KOLOM KIRI: DAFTAR KRITERIA -->
+    <div class="col-md-6">
+        <div class="card card-shadow">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-sliders-h me-2"></i>Daftar Kriteria</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Kriteria</th>
+                            <th>Sifat</th>
+                            <th>Bobot</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for kriteria in kriteria_list %}
+                        <tr>
+                            <td>{{ kriteria.kode }}</td>
+                            <td>
+                                {% if kriteria.sifat == 'BENEFIT' %}
+                                <span class="badge bg-success">Benefit</span>
+                                {% else %}
+                                <span class="badge bg-danger">Cost</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ kriteria.bobot|default:"-" }}</td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="3" class="text-center">Belum ada data kriteria.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- NOTIFIKASI -->
+                {% if success %}
+                <div class="alert alert-success alert-dismissible fade show mt-3">
+                    <i class="fas fa-check-circle me-2"></i> {{ success }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                {% if error %}
+                <div class="alert alert-danger alert-dismissible fade show mt-3">
+                    <i class="fas fa-exclamation-circle me-2"></i> {{ error }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                {% endif %}
+
+                {% if bobot_result %}
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Bobot Kriteria:</strong><br>
+                    {% for kode, bobot in bobot_result.items %}
+                    {{ kode }} = {{ bobot|floatformat:4 }}
+                    {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- KOLOM KANAN: INPUT PAIRWISE -->
+    <div class="col-md-6">
+        <div class="card card-shadow">
+            <div class="card-header bg-light">
+                <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Input Pairwise Comparison</h5>
+                <small class="text-muted">(5 kriteria → 10 pasang perbandingan)</small>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <!-- ============================================================ -->
+                    <!-- PAIRWISE LAMA (6 PASANG) -->
+                    <!-- ============================================================ -->
+
+                    <!-- 1. ROE vs EPS -->
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">ROE vs EPS</label>
+                        <input type="number" class="form-control" name="roe_eps" 
+                               value="{{ pairwise_values.roe_eps|default:'7' }}" step="0.01" min="0.01" max="9">
+                        <small class="text-muted">Nilai > 1 = ROE lebih penting, Nilai < 1 = EPS lebih penting</small>
+                    </div>
+
+                    <!-- 2. ROE vs PER -->
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">ROE vs PER</label>
+                        <input type="number" class="form-control" name="roe_per" 
+                               value="{{ pairwise_values.roe_per|default:'3' }}" step="0.01" min="0.01" max="9">
+                        <small class="text-muted">Nilai > 1 = ROE lebih penting</small>
+                    </div>
+
+                    <!-- 3. ROE vs DER -->
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">ROE vs DER</label>
+                        <input type="number" class="form-control" name="roe_der" 
+                               value="{{ pairwise_values.roe_der|default:'7' }}" step="0.01" min="0.01" max="9">
+                        <small class="text-muted">Nilai > 1 = ROE lebih penting</small>
+                    </div>
+
+                    <!-- 4. EPS vs PER -->
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">EPS vs PER</label>
+                        <input type="number" class="form-control" name="eps_per" 
+                               value="{{ pairwise_values.eps_per|default:'0.14' }}" step="0.01" min="0.01" max="9">
+                        <small class="text-muted">Nilai 0.14 = PER jauh lebih penting dari EPS (1/7)</small>
+                    </div>
+
+                    <!-- 5. EPS vs DER -->
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">EPS vs DER</label>
+                        <input type="number" class="form-control" name="eps_der" 
+                               value="{{ pairwise_values.eps_der|default:'0.20' }}" step="0.01" min="0.01" max="9">
+                        <small class="text-muted">Nilai 0.20 = DER lebih penting dari EPS (1/5)</small>
+                    </div>
+
+                    <!-- 6. PER vs DER -->
+                    <div class="mb-2">
+                        <label class="form-label small fw-bold">PER vs DER</label>
+                        <input type="number" class="form-control" name="per_der" 
+                               value="{{ pairwise_values.per_der|default:'3' }}" step="0.01" min="0.01" max="9">
+                        <small class="text-muted">Nilai > 1 = PER lebih penting</small>
+                    </div>
+
+                    <!-- ============================================================ -->
+                    <!-- PAIRWISE BARU: BI_RATE (4 PASANG) -->
+                    <!-- ============================================================ -->
+
+                    <hr>
+                    <p class="fw-bold text-primary"><i class="fas fa-plus-circle"></i> Pairwise dengan BI_RATE</p>
+
+                    <!-- 7. ROE vs BI_RATE -->
+<div class="mb-2">
+    <label class="form-label small fw-bold">ROE vs BI_RATE</label>
+    <input type="text" class="form-control" name="roe_bi_rate" 
+           value="{{ pairwise_values.roe_bi_rate|default:'' }}" 
+           inputmode="decimal" placeholder="Contoh: 3">
+    <small class="text-muted">Nilai > 1 = ROE lebih penting, Nilai < 1 = BI_RATE lebih penting</small>
+</div>
+
+<!-- 8. EPS vs BI_RATE -->
+<div class="mb-2">
+    <label class="form-label small fw-bold">EPS vs BI_RATE</label>
+    <input type="text" class="form-control" name="eps_bi_rate" 
+           value="{{ pairwise_values.eps_bi_rate|default:'' }}" 
+           inputmode="decimal" placeholder="Contoh: 2">
+    <small class="text-muted">Nilai > 1 = EPS lebih penting, Nilai < 1 = BI_RATE lebih penting</small>
+</div>
+
+<!-- 9. PER vs BI_RATE -->
+<div class="mb-2">
+    <label class="form-label small fw-bold">PER vs BI_RATE</label>
+    <input type="text" class="form-control" name="per_bi_rate" 
+           value="{{ pairwise_values.per_bi_rate|default:'' }}" 
+           inputmode="decimal" placeholder="Contoh: 0.5">
+    <small class="text-muted">Nilai > 1 = PER lebih penting, Nilai < 1 = BI_RATE lebih penting</small>
+</div>
+
+<!-- 10. DER vs BI_RATE -->
+<div class="mb-2">
+    <label class="form-label small fw-bold">DER vs BI_RATE</label>
+    <input type="text" class="form-control" name="der_bi_rate" 
+           value="{{ pairwise_values.der_bi_rate|default:'' }}" 
+           inputmode="decimal" placeholder="Contoh: 0.33">
+    <small class="text-muted">Nilai > 1 = DER lebih penting, Nilai < 1 = BI_RATE lebih penting</small>
+</div> 
+
+                    <hr>
+
+                    <button type="submit" name="simpan_pairwise" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Simpan Pairwise
+                    </button>
+
+                    <button type="submit" name="hitung_bobot" class="btn btn-success">
+                        <i class="fas fa-calculator me-1"></i> Hitung Bobot Fuzzy
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

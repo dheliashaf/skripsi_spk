@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% block title %}Hasil Rekomendasi{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-3">Hasil Keputusan (F-AHP)</h2>
+
+    <!-- Alert Mode Ranking -->
+    <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        <strong>Mode Ranking:</strong>
+        {% if mode == 'all_sektor' %}
+            All Sektor (Global)
+        {% else %}
+            Per Sektor (Apple-to-Apple)
+        {% endif %}
+    </div>
+
+    <div class="alert alert-success">
+        <i class="fas fa-check-circle"></i> Perhitungan Selesai! Sistem F-AHP telah menghitung kelayakan berdasarkan emiten yang
+        {% if mode == 'all_sektor' %}
+            <strong>secara global</strong>.
+        {% else %}
+            sejenis secara <strong>Apple-to-Apple</strong> di sektor terpilih.
+        {% endif %}
+    </div>
+
+    <!-- Grafik -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light fw-bold">GRAFIK SKOR PREFERENSI AKHIR (Sj)</div>
+        <div class="card-body">
+            <!-- ============================================================ -->
+            <!-- PERBAIKI: Tampilkan semua sektor yang dipilih -->
+            <!-- ============================================================ -->
+            <p class="text-muted">
+                <strong>
+                    {% if mode == 'all_sektor' %}
+                        Semua Sektor
+                    {% else %}
+                        {% if hasil %}
+                            Sektor: 
+                            {% with sektor_list=hasil|dictsort:"sektor" %}
+                                {% for item in sektor_list %}
+                                    {% ifchanged item.sektor %}
+                                        {{ item.sektor }}{% if not forloop.last %}, {% endif %}
+                                    {% endifchanged %}
+                                {% endfor %}
+                            {% endwith %}
+                        {% else %}
+                            -
+                        {% endif %}
+                    {% endif %}
+                </strong>
+            </p>
+            <div class="row">
+                <div class="col-md-8">
+                    {% if hasil %}
+                        {% for item in hasil %}
+                        <div class="mb-2">
+                            <div class="d-flex justify-content-between">
+                                <span>
+                                    {% if mode == 'all_sektor' %}
+                                        {{ item.kode }} ({{ item.sektor|default:"-" }})
+                                    {% else %}
+                                        {{ item.kode }}
+                                    {% endif %}
+                                </span>
+                                <span>{{ item.skor|default:0 }}</span>
+                            </div>
+                            <div class="progress" style="height:30px;">
+                                <div class="progress-bar bg-{{ item.warna|default:'secondary' }}" style="width: {{ item.persen|default:0 }}%;">
+                                    {{ item.skor|default:0 }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-muted">Belum ada data hasil rekomendasi.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alert Penjelasan Skor -->
+    <div class="alert alert-info mb-3">
+        <i class="fas fa-info-circle"></i> 
+        <strong>Skor Preferensi (0–1):</strong> Semakin tinggi skor, semakin baik rekomendasi saham. 
+        Di bawah setiap skor terlihat <strong>rincian kontribusi</strong> dari masing-masing kriteria (ROE, EPS, PER, DER) 
+        yang membantu Anda memahami dari mana skor tersebut berasal. 
+        <strong>BI Rate</strong> ditampilkan sebagai informasi tambahan kondisi makroekonomi.
+    </div>
+
+    <!-- Tabel Peringkat -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-light fw-bold">📋 Tabel Peringkat</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            {% if mode == 'all_sektor' %}
+                            <th>Sektor</th>
+                            {% endif %}
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th data-bs-toggle="tooltip" title="Skor dihitung dari ROE, EPS, PER, DER yang dibobot. Semakin tinggi, semakin baik. BI Rate ditampilkan sebagai informasi tambahan.">
+                                Skor Preferensi
+                            </th>
+                            <th>Rekomendasi</th>
+                            <th>Kesimpulan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if hasil %}
+                            {% for item in hasil %}
+                            <tr>
+                                <td><span class="badge bg-{{ item.rank_color|default:'secondary' }}">{{ item.rank|default:forloop.counter }}</span></td>
+                                {% if mode == 'all_sektor' %}
+                                <td>{{ item.sektor|default:"-" }}</td>
+                                {% endif %}
+                                <td><strong>{{ item.kode|default:"-" }}</strong></td>
+                                <td>{{ item.nama|default:"-" }}</td>
+                                <td>
+                                    <strong>{{ item.skor|default:0 }}</strong>
+                                    <br>
+                                    <small class="text-muted">
+                                        ROE: {{ item.kontribusi_roe|floatformat:3|default:"0.000" }} |
+                                        EPS: {{ item.kontribusi_eps|floatformat:3|default:"0.000" }} |
+                                        PER: {{ item.kontribusi_per|floatformat:3|default:"0.000" }} |
+                                        DER: {{ item.kontribusi_der|floatformat:3|default:"0.000" }}
+                                        {% if item.bi_rate is not None %}
+                                        <br>
+                                        BI Rate: {{ item.bi_rate|floatformat:2 }}% (informasi tambahan)
+                                        {% endif %}
+                                    </small>
+                                </td>
+                                <td><span class="badge bg-{{ item.rekom_color|default:'secondary' }}">{{ item.rekom|default:"-" }}</span></td>
+                                <td><small>{{ item.kesimpulan|default:"-" }}</small></td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr><td colspan="{% if mode == 'all_sektor' %}7{% else %}6{% endif %}" class="text-center">Belum ada data.</td></tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOMBOL DOWNLOAD PDF -->
+    <div class="mt-4 text-center">
+        <a href="{% url 'generate_pdf_user' %}" class="btn btn-danger btn-lg">
+            <i class="fas fa-file-pdf me-2"></i> Download PDF Laporan
+        </a>
+        <p class="text-muted mt-2 small">
+            <i class="fas fa-info-circle"></i> Klik tombol di atas untuk mengunduh laporan ranking dalam format PDF.
+        </p>
+    </div>
+</div>
+
+<!-- Aktifkan tooltip Bootstrap -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+{% endblock %}
